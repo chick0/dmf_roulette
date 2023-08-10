@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MusicSelect.unity
+    guid: 73188fccdb791b3468626873043e7044
+  - enabled: 1
+    path: Assets/Scenes/Roulette.unity
+    guid: 7415e7c3d4f09804db2d85c61484963d
+  - enabled: 1
+    path: Assets/Scenes/RerollReady.unity
+    guid: 2c0c45dc111a76b4aa2ffecaf20299ab
+  m_configObjects: {}
