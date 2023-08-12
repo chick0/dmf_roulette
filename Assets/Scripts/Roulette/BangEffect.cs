@@ -15,7 +15,7 @@ namespace Roulette
 
         private float timeflow = 0;
 
-        void Start()
+        private void Start()
         {
             rw = GetComponent<RawImage>();
 
@@ -25,7 +25,7 @@ namespace Roulette
             rw.color = rwColor;
         }
 
-        void Update()
+        private void Update()
         {
             if (isStarted)
             {

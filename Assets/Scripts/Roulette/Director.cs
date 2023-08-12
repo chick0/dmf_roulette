@@ -33,10 +33,7 @@ namespace Roulette
         [SerializeField]
         private float RouletteFalldownVelocity;
 
-        public float Velocity
-        {
-            get { return RouletteFalldownVelocity; }
-        }
+        public float Velocity => RouletteFalldownVelocity;
 
         [SerializeField]
         private float RouletteCountdown;
@@ -109,16 +106,16 @@ namespace Roulette
             GameObject[] plates = GameObject.FindGameObjectsWithTag("Plate");
 
             // 판때기를 하나씩 삭제합니다
-            for (int i = 0;  i < plates.Length; i++)
+            for (int i = 0; i < plates.Length; i++)
             {
                 Destroy(plates[i]);
             }
 
             // 기존에 추가된 판때기 렌더러를 삭제합니다
             Destroy(GetComponent<PlateRender>());
-            
+
             // 새로운 판때기 런더러를 선언해 다시 판때기를 생성합니다
-            var pr = gameObject.AddComponent<PlateRender>();
+            PlateRender pr = gameObject.AddComponent<PlateRender>();
             pr.director = this;
         }
 

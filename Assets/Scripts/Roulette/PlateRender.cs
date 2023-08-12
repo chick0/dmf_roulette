@@ -12,7 +12,7 @@ namespace Roulette
         public string Name;
         public string Tune;
 
-        public float SuperSecretValue { get { return Random.Range(0f, 10f); } }
+        public float SuperSecretValue => Random.Range(0f, 10f);
 
         public Plate(string name, string tune)
         {
@@ -26,7 +26,7 @@ namespace Roulette
         public Director director;
 
         private List<Plate> PlateList = new();
-        private Dictionary<string, Sprite> Plate = new();
+        private readonly Dictionary<string, Sprite> Plate = new();
         private int PlateWaiting = 0;
 
         private GameObject Prefab;
@@ -61,7 +61,7 @@ namespace Roulette
 
             if (PlateList.Count == 0)
             {
-                print("추첨할 악곡이 없습니다.");
+                director.Label.text = "추첨할 악곡이 없습니다.";
                 return;
             }
 
@@ -100,6 +100,13 @@ namespace Roulette
         {
             PlateList = PlateList.OrderBy(x => x.SuperSecretValue).ToList();
 
+            // 선택한 패턴이 2개면 복사해 4개로 룰렛 진행
+            if (PlateList.Count == 2)
+            {
+                PlateList.Add(PlateList[0]);
+                PlateList.Add(PlateList[1]);
+            }
+
             float PlateSize = Prefab.GetComponent<BoxCollider2D>().size.y * Prefab.transform.localScale.y;
 
             for (int i = 0; i < PlateList.Count; i++)
@@ -120,7 +127,7 @@ namespace Roulette
 
                 go.transform.localPosition = new Vector3(0, PlateSize * i, 0);
 
-                var pc = go.AddComponent<PlateController>();
+                PlateController pc = go.AddComponent<PlateController>();
                 pc.PlateSize = PlateSize;
                 pc.PlateIndex = i;
                 pc.director = director;
@@ -133,6 +140,13 @@ namespace Roulette
             }
 
             print("판때기 렌더링 끝");
+
+            // 패턴 1개면 바로 추첨 종료
+            if (PlateList.Count == 1)
+            {
+                director.CalcRouletteResult();
+                return;
+            }
 
             // 시작 카운트 다운 시작
             director.isRouletteCountdown = true;

@@ -11,20 +11,20 @@ namespace Roulette
         /// <summary>
         /// 메인 카메라
         /// </summary>
-        GameObject MainCamera;
+        private GameObject MainCamera;
 
         /// <summary>
         /// 이 판때기가 카메라에 보인적이 있나요?
         /// </summary>
-        bool flag;
+        private bool flag;
 
-        void Start()
+        private void Start()
         {
             MainCamera = director.MainCamera;
             flag = false;
         }
 
-        void Update()
+        private void Update()
         {
             float distance = Vector2.Distance(transform.position, MainCamera.transform.position);
 
