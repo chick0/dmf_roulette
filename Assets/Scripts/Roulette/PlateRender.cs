@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,8 @@ namespace Roulette
         public string Name;
         public string Tune;
 
+        public float SuperSecretValue { get { return Random.Range(0f, 10f); } }
+
         public Plate(string name, string tune)
         {
             Name = name;
@@ -20,21 +23,20 @@ namespace Roulette
 
     public class PlateRender : MonoBehaviour
     {
-        public GameObject displayPrefab;
+        public Director director;
 
-        public Sprite Tune4;
-        public Sprite Tune5;
-        public Sprite Tune6;
-        public Sprite Tune8;
-
-        private readonly List<Plate> PlateList = new();
-        private readonly Dictionary<string, Sprite> Plate = new();
+        private List<Plate> PlateList = new();
+        private Dictionary<string, Sprite> Plate = new();
         private int PlateWaiting = 0;
+
+        private GameObject Prefab;
 
         private readonly List<Music> musicList = MusicData.GetMusicList();
 
         private void Start()
         {
+            Prefab = Resources.Load<GameObject>("MusicPlate");
+
             List<string> loadingPlate = new();
 
             // 불러와야 하는 판때기의 목록을 가져옵니다
@@ -59,7 +61,7 @@ namespace Roulette
 
             if (PlateList.Count == 0)
             {
-
+                print("추첨할 악곡이 없습니다.");
                 return;
             }
 
@@ -94,56 +96,46 @@ namespace Roulette
             yield return null;
         }
 
-        private Sprite GetTuneSprite(string tune)
-        {
-            return tune == "4B" ? Tune4 : tune == "5B" ? Tune5 : tune == "6B" ? Tune6 : Tune8;
-        }
-
         private void PlateRener()
         {
-            // 판때기 셔플
-            _ = Utils.ShuffleList(PlateList);
+            PlateList = PlateList.OrderBy(x => x.SuperSecretValue).ToList();
 
-            int max = PlateList.Count;
-
-            // 판때기 복제 (2개 추가)
-            for (int i = 0; i < 7; i++)
-            {
-                for (int j = 0; j < max; j++)
-                {
-                    PlateList.Add(PlateList[j]);
-                }
-            }
-
-            float PlateSize = displayPrefab.GetComponent<BoxCollider2D>().size.y * displayPrefab.transform.localScale.y;
+            float PlateSize = Prefab.GetComponent<BoxCollider2D>().size.y * Prefab.transform.localScale.y;
 
             for (int i = 0; i < PlateList.Count; i++)
             {
                 Plate plate = PlateList[i];
-                GameObject go = Instantiate(displayPrefab);
+                GameObject go = Instantiate(Prefab);
                 go.name = plate.Name;
 
                 // 정보 저장
                 _ = go.AddComponent<PlateStorage>();
                 go.GetComponent<PlateStorage>().plate = plate;
 
-                // 판때기 & 버튼 이미지 저장
+                // 판때기 & 버튼 이미지 설정
                 Transform Canvas = go.transform.Find("Canvas");
 
                 Canvas.Find("Plate").GetComponent<Image>().sprite = Plate[plate.Name];
-                Canvas.Find("Button").GetComponent<Image>().sprite = GetTuneSprite(plate.Tune);
+                Canvas.Find("Button").GetComponent<Image>().sprite = Resources.Load<Sprite>(plate.Tune);
 
-                go.transform.localPosition = new Vector3(0, -1 * PlateSize * i, 0);
+                go.transform.localPosition = new Vector3(0, PlateSize * i, 0);
 
-                if ((PlateList.Count - 1) == i)
+                var pc = go.AddComponent<PlateController>();
+                pc.PlateSize = PlateSize;
+                pc.PlateIndex = i;
+                pc.director = director;
+
+                // 이 판때기는 가장 위에 있는 판때기이다
+                if (i == 0)
                 {
-                    _ = go.AddComponent<LastPlateController>();
+                    director.TopPlate = go;
                 }
             }
 
             print("판때기 렌더링 끝");
 
-            Director.isRouletteCountdown = true;
+            // 시작 카운트 다운 시작
+            director.isRouletteCountdown = true;
         }
     }
 }

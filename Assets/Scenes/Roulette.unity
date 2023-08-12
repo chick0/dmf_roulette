@@ -159,7 +159,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -125}
-  m_SizeDelta: {x: 1600, y: 260}
+  m_SizeDelta: {x: 1920, y: 260}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &45815634
 MonoBehaviour:
@@ -341,7 +341,6 @@ GameObject:
   - component: {fileID: 378859656}
   - component: {fileID: 378859658}
   - component: {fileID: 378859657}
-  - component: {fileID: 378859659}
   m_Layer: 0
   m_Name: Director
   m_TagString: Untagged
@@ -376,11 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcdf11444bf21b6438093b2691d5e866, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayPrefab: {fileID: 8113318204814824645, guid: 9887fc85f7cd36543bd0a07cec1f78c7, type: 3}
-  Tune4: {fileID: 21300000, guid: 59ccdaf8a060f0d45abd4cb9c7a167af, type: 3}
-  Tune5: {fileID: 21300000, guid: 1b08bf447b81e674bb8d1c04a734cf19, type: 3}
-  Tune6: {fileID: 21300000, guid: dee9c9d8d64b30d4a84c28363a06b80a, type: 3}
-  Tune8: {fileID: 21300000, guid: e66ad39cc6a50a840a9a3d944d5cf42d, type: 3}
+  director: {fileID: 378859658}
 --- !u!114 &378859658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,23 +389,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Label: {fileID: 1910266172}
-  cameraController: {fileID: 1031314980}
-  calibration: {fileID: 378859659}
+  MainCamera: {fileID: 1031314976}
+  bangEffect: {fileID: 1330475939}
+  TopPlate: {fileID: 0}
+  isRouletteCountdown: 0
+  isRouletteEnabled: 0
+  RouletteFalldownVelocity: 50
   RouletteCountdown: 2
   RouletteFalldowntime: 5
---- !u!114 &378859659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 378859655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb73ffbff2d037048a37b2b87a0e1aa3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Label: {fileID: 1910266172}
 --- !u!1 &789648829
 GameObject:
   m_ObjectHideFlags: 0
@@ -774,6 +760,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1330475936}
   - {fileID: 45815633}
   - {fileID: 1910266171}
   - {fileID: 240318288}
@@ -798,7 +785,6 @@ GameObject:
   - component: {fileID: 1031314979}
   - component: {fileID: 1031314978}
   - component: {fileID: 1031314977}
-  - component: {fileID: 1031314980}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -824,7 +810,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -880,19 +866,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1031314980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1031314976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ca6a94226dc3ef48ae68c6946ce4b5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Velocity: 60
 --- !u!1 &1254385391
 GameObject:
   m_ObjectHideFlags: 0
@@ -928,8 +901,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 2.5, y: 0}
-  m_SizeDelta: {x: 5, y: 240}
+  m_AnchoredPosition: {x: 30, y: 0}
+  m_SizeDelta: {x: 10, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1254385393
 MonoBehaviour:
@@ -966,6 +939,93 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1254385391}
   m_CullTransparentMesh: 1
+--- !u!1 &1330475935
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1330475936}
+  - component: {fileID: 1330475938}
+  - component: {fileID: 1330475937}
+  - component: {fileID: 1330475939}
+  m_Layer: 5
+  m_Name: BangEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1330475936
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330475935}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 826401065}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 5000, y: 5000}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1330475937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330475935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 2800000, guid: 8553bc807670c544d89a01d883ca5cbe, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!222 &1330475938
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330475935}
+  m_CullTransparentMesh: 1
+--- !u!114 &1330475939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330475935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33d65d03d0c6545489b954be1487fbb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectTime: 0.7
 --- !u!1 &1635764914
 GameObject:
   m_ObjectHideFlags: 0
