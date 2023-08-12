@@ -12,6 +12,10 @@ namespace Roulette
 
         public BangEffect bangEffect;
 
+        public AudioSource NextPlate;
+
+        public AudioSource Result;
+
         /// <summary>
         /// 최상위 판때기
         /// </summary>
@@ -70,9 +74,22 @@ namespace Roulette
                 RouletteFalldowntime -= Time.deltaTime;
                 Label.text = $"종료까지 {RouletteFalldowntime:0.00}초";
 
+                if (!NextPlate.isPlaying)
+                {
+                    // 다음 판때기로 넘어가는 효과음 음소거 해제 및 재생
+                    NextPlate.mute = false;
+                    NextPlate.Play();
+                }
+
                 if (RouletteFalldowntime < 0)
                 {
                     isRouletteEnabled = false;
+
+                    // 다음 판때기로 넘어가는 효과음 음소거 및 멈추기
+                    NextPlate.mute = true;
+                    NextPlate.Stop();
+
+                    // 룰렛 추첨 결과 계산
                     CalcRouletteResult();
                 }
             }
@@ -156,6 +173,8 @@ namespace Roulette
 
             // 해당 판때기를 중앙으로 이동시킵니다
             NearByPlate.transform.position = new(0, 0, -1);
+
+            Result.Play();
         }
     }
 }
